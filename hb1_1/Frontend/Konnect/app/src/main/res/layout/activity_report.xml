@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/report_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Report content"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:gravity="top|start"
+        android:maxLength="500"
+        android:maxLines="4"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:id="@+id/create_report_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Create Report" />
+
+    <Button
+        android:id="@+id/update_report_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Update Report" />
+
+    <Button
+        android:id="@+id/delete_report_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Delete Report" />
+
+</LinearLayout>

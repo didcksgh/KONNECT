@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.konnect.helper</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.example.konnect.helper;
+
+import android.app.AlertDialog;
+import android.content.Context;
+
+import org.json.JSONArray;
+
+import java.io.Serializable;
+import java.util.Objects;
+import java.util.stream.Stream;
+
+/**
+ * This class represents a User object with various properties and methods.
+ *
+ * @author Jayson Acosta
+ */
+public class User implements Serializable {
+
+    /*---------------------------------------------- USER VARIABLES ----------------------------------------------*/
+
+    /**
+     * The name of the user.
+     */
+    private String name;
+
+    /**
+     * The email of the user.
+     */
+    private String email;
+
+    /**
+     * The username of the user.
+     */
+    private String username;
+
+    /**
+     * The gender of the user.
+     */
+    private String gender;
+
+    /**
+     * The bio of the user.
+     */
+    private String bio;
+
+    /**
+     * The password of the user.
+     */
+    private String password;
+
+    /**
+     * The ID of the user.
+     */
+    private String ID;
+
+    /**
+     * The birthday of the user.
+     */
+    private String birthday;
+
+    /**
+     * The age of the user.
+     */
+    private String age;
+
+    /**
+     * The date the user joined the app.
+     */
+    private String joinDate;
+
+    /**
+     * The friend requests of the user, regardless of the status
+     */
+    private JSONArray friendRequests;
+
+    /*---------------------------------------------- USER INSTANCE ----------------------------------------------*/
+
+    /**
+     * The singleton instance of the User class.
+     */
+    private static User instance;
+
+    /**
+     * Default constructor for the User class.
+     */
+    private User(){}
+
+    /**
+     * Gets the singleton instance of the User class.
+     *
+     * @return The instance of the User class.
+     */
+    public static synchronized User getInstance() {
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (instance == null){ instance = new User(); }</span>
+<span class="fc" id="L95">        return instance;</span>
+    }
+
+    public static synchronized void setInstance(User oldInstance) {
+<span class="nc" id="L99">        instance = oldInstance;</span>
+<span class="nc" id="L100">    }</span>
+
+<span class="nc" id="L102">    public static synchronized boolean isDataValid(User instance){ return Stream.of(instance.username, instance.password, instance.email).allMatch(Objects::nonNull); }</span>
+
+
+    /*---------------------------------------------- SETTER METHODS ----------------------------------------------*/
+
+    /**
+     * Sets the username of the user.
+     *
+     * @param username The username to be set.
+     */
+<span class="fc" id="L112">    public User setUsername(String username) { this.username = username; return instance;}</span>
+
+    /**
+     * Sets the email of the user.
+     *
+     * @param email The email to be set.
+     */
+<span class="fc" id="L119">    public User setEmail(String email) { this.email = email; return instance;}</span>
+
+    /**
+     * Sets the ID of the user.
+     *
+     * @param ID The ID to be set.
+     */
+<span class="fc" id="L126">    public User setID(String ID) { this.ID = ID; return instance;}</span>
+
+    /**
+     * Sets the password of the user.
+     *
+     * @param password The password to be set.
+     */
+<span class="fc" id="L133">    public void setPassword(String password) { this.password = password; }</span>
+
+    /**
+     * Sets the name of the user.
+     *
+     * @param name The name to be set.
+     */
+<span class="fc" id="L140">    public User setName(String name) { this.name = name; return instance;}</span>
+
+    /**
+     * Sets the age of the user.
+     *
+     * @param age The age to be set.
+     */
+<span class="fc" id="L147">    public void setAge(String age) { this.age = age; }</span>
+
+    /**
+     * Sets the Join date of the user.
+     *
+     * @param joinDate The join date to be set.
+     */
+<span class="nc" id="L154">    public User setJoinDate(String joinDate){ this.joinDate = joinDate; return instance;}</span>
+
+    /**
+     * Sets the gender of the user.
+     *
+     * @param gender The gender to be set.
+     */
+<span class="fc" id="L161">    public User setGender(String gender) { this.gender = gender; return instance;}</span>
+
+    /**
+     * Sets the bio of the user.
+     *
+     * @param bio The bio to be set.
+     */
+<span class="fc" id="L168">    public User setBio(String bio) { this.bio = bio; return instance;}</span>
+
+    /**
+     * Sets the birthday of the user.
+     *
+     * @param birthday The birthday to be set.
+     */
+<span class="fc" id="L175">    public User setBirthday(String birthday) { this.birthday = birthday; return instance;}</span>
+
+    /** Sets the friend requests of the user
+     *
+     * @param friendRequests friend requests the user has received/sent
+     */
+<span class="fc" id="L181">    public void setFriendRequests(JSONArray friendRequests) { this.friendRequests = friendRequests;}</span>
+
+    /*---------------------------------------------- GETTER METHODS ----------------------------------------------*/
+
+    /**
+     * Gets the username of the user.
+     *
+     * @return The username of the user.
+     */
+<span class="fc" id="L190">    public String getUsername() { return username; }</span>
+
+    /**
+     * Gets the email of the user.
+     *
+     * @return The email of the user.
+     */
+<span class="fc" id="L197">    public String getEmail() { return email; }</span>
+
+    /**
+     * Gets the ID of the user.
+     *
+     * @return The ID of the user.
+     */
+<span class="nc" id="L204">    public String getID() { return ID; }</span>
+
+    /**
+     * Gets the password of the user.
+     *
+     */
+<span class="fc" id="L210">    public String getPassword() { return password; }</span>
+
+    /**
+     * Gets the name of the user.
+     *
+     * @return The name of the user.
+     */
+<span class="fc" id="L217">    public String getName() { return name; }</span>
+
+    /**
+     * Gets the age of the user.
+     *
+     * @return The age of the user.
+     */
+<span class="nc" id="L224">    public String getAge() { return age; }</span>
+
+    /**
+     * Gets the join date of the user.
+     *
+     * @return The join date of the user.
+     */
+<span class="fc" id="L231">    public String getJoinDate() { return joinDate; }</span>
+
+    /**
+     * Gets the gender of the user.
+     *
+     * @return The gender of the user.
+     */
+<span class="fc" id="L238">    public String getGender() { return gender; }</span>
+
+    /**
+     * Gets the bio of the user.
+     *
+     * @return The bio of the user.
+     */
+<span class="nc" id="L245">    public String getBio() { return bio; }</span>
+
+    /**
+     * Gets the birthday of the user.
+     *
+     * @return The birthday of the user.
+     */
+<span class="fc" id="L252">    public String getBirthday() { return birthday; }</span>
+
+<span class="fc" id="L254">    public JSONArray getFriendRequests() { return friendRequests; }</span>
+
+    /*---------------------------------------------- SCREEN POPUPS ----------------------------------------------*/
+//    /**
+//     * Displays a toast message based on the provided error code and logs the error message.
+//     *
+//     * @param context   The context in which the toast message will be displayed.
+//     * @param errorCode The error code indicating the type of error. 0 is a login error and 1 is a server error.
+//     * @param error     The error message to be logged.
+//     */
+//
+//    public static void toastError(Context context, int errorCode, String error){
+//        int duration = Toast.LENGTH_LONG;
+//        String text;
+//        switch (errorCode){
+//            case 0:
+//                text = &quot;There was an error while attempting to login&quot;;
+//                break;
+//            case 1:
+//                text = &quot;There is an error with the server&quot;;
+//                break;
+//            case 2:
+//                text = error;
+//                break;
+//            default:
+//                text = &quot;Something went wrong&quot;;
+//        }
+//        Toast.makeText(context, text, duration).show();
+//        Log.e(&quot;Error&quot;, error);
+//    }
+    public static void dialogError(Context context, String error){
+<span class="nc" id="L285">        AlertDialog.Builder builder = new AlertDialog.Builder(context);</span>
+<span class="nc" id="L286">        builder.setMessage(error)</span>
+<span class="nc" id="L287">                .setTitle(&quot;Error:&quot;);</span>
+
+<span class="nc" id="L289">        AlertDialog dialog = builder.create();</span>
+<span class="nc" id="L290">        dialog.show();</span>
+<span class="nc" id="L291">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.2.2</div></body></html>

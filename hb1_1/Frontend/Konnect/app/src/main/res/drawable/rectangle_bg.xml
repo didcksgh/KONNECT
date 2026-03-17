@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="#FFFFFF" /> <!-- Change this to the desired background color -->
+
+    <size
+        android:width="400dp"
+        android:height="400dp" /> <!-- Set the desired width and height -->
+</shape>

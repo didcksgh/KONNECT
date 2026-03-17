@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SignupActivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.konnect.entry</a> &gt; <span class="el_source">SignupActivity.java</span></div><h1>SignupActivity.java</h1><pre class="source lang-java linenums">package com.example.konnect.entry;
+
+import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.konnect.ChoosehobbiesActivity;
+import com.example.konnect.R;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+/**
+ * This class represents the SignupActivity and handles the signup process for new users. This activity connects to LoginActivity and ChooseHobbiesActivity.
+ *
+ * @author Chanho Yang
+ */
+<span class="nc" id="L40">public class SignupActivity extends AppCompatActivity {</span>
+
+    private EditText usernameEditText;  // define username edittext variable
+    private EditText passwordEditText;  // define password edittext variable
+    private EditText confirmEditText;   // define confirm edittext variable
+    private EditText emailAccountEditText; // define emailAccount edittext variable
+    private EditText nameEditText;
+    private EditText ageEditText;
+    private Spinner genderSpinner;
+    private Button DOBButton;
+    private Button loginButton;         // define login button variable
+    private Button signupButton;        // define signup button variable
+    private Button homeButton;
+    private Date birthday;
+    private String gender;
+
+    /**
+     *
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+<span class="nc" id="L62">        super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L63">        setContentView(R.layout.entry_activity_signup);</span>
+
+        /* initialize UI elements */
+<span class="nc" id="L66">        usernameEditText = findViewById(R.id.signup_username_edt);  // link to username edtext in the Signup activity XML</span>
+<span class="nc" id="L67">        passwordEditText = findViewById(R.id.signup_password_edt);  // link to password edtext in the Signup activity XML</span>
+<span class="nc" id="L68">        confirmEditText = findViewById(R.id.signup_confirm_edt);    // link to confirm edtext in the Signup activity XML</span>
+<span class="nc" id="L69">        emailAccountEditText = findViewById(R.id.signup_email_edt);</span>
+<span class="nc" id="L70">        nameEditText = findViewById(R.id.signup_name_edt);</span>
+<span class="nc" id="L71">        ageEditText = findViewById(R.id.signup_age_edt);</span>
+<span class="nc" id="L72">        genderSpinner = findViewById(R.id.signup_gender_spinner);</span>
+<span class="nc" id="L73">        DOBButton = findViewById(R.id.signup_birthday_btn);</span>
+<span class="nc" id="L74">        loginButton = findViewById(R.id.signup_login_btn);    // link to login button in the Signup activity XML</span>
+<span class="nc" id="L75">        signupButton = findViewById(R.id.signup_signup_btn);  // link to signup button in the Signup activity XML</span>
+<span class="nc" id="L76">        homeButton = findViewById(R.id.signup_home_btn);</span>
+
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+<span class="nc" id="L80">        ArrayAdapter&lt;CharSequence&gt; adapter = ArrayAdapter.createFromResource(this,</span>
+                R.array.gender_array, android.R.layout.simple_spinner_item);
+
+        // Specify the layout to use when the list of choices appears
+<span class="nc" id="L84">        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);</span>
+
+        // Apply the adapter to the spinner
+<span class="nc" id="L87">        genderSpinner.setAdapter(adapter);</span>
+
+        // Set the selected gender when an item is selected in the spinner
+<span class="nc" id="L90">        genderSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {</span>
+            @Override
+            public void onItemSelected(AdapterView&lt;?&gt; parent, View view, int position, long id) {
+<span class="nc" id="L93">               gender = (String) parent.getItemAtPosition(position);</span>
+<span class="nc" id="L94">            }</span>
+
+            @Override
+            public void onNothingSelected(AdapterView&lt;?&gt; parent) {
+                // Do nothing
+<span class="nc" id="L99">            }</span>
+        });
+
+
+        // Create a date set listener
+<span class="nc" id="L104">        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener()  {</span>
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+<span class="nc" id="L107">                Calendar calendar = Calendar.getInstance();</span>
+<span class="nc" id="L108">                calendar.set(year, month, dayOfMonth);</span>
+
+                // Save the selected birthday
+<span class="nc" id="L111">                birthday = calendar.getTime();</span>
+
+                // Format the date to a string and set it as the button text
+<span class="nc" id="L114">                SimpleDateFormat df = new SimpleDateFormat(&quot;MM/dd/yyyy&quot;, Locale.getDefault());</span>
+<span class="nc" id="L115">                DOBButton.setText(df.format(birthday));</span>
+<span class="nc" id="L116">            }</span>
+        };
+
+        // Show the date picker dialog when the birthday button is clicked
+<span class="nc" id="L120">        DOBButton.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+<span class="nc" id="L123">                Calendar calendar = Calendar.getInstance();</span>
+<span class="nc" id="L124">                new DatePickerDialog(SignupActivity.this, dateSetListener,</span>
+<span class="nc" id="L125">                        calendar.get(Calendar.YEAR),</span>
+<span class="nc" id="L126">                        calendar.get(Calendar.MONTH),</span>
+<span class="nc" id="L127">                        calendar.get(Calendar.DAY_OF_MONTH)).show();</span>
+<span class="nc" id="L128">            }</span>
+        });
+
+
+<span class="nc" id="L132">        loginButton.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+
+                /* when login button is pressed, use intent to switch to Login Activity */
+<span class="nc" id="L137">                Intent intent = new Intent(SignupActivity.this, MainActivity.class);</span>
+<span class="nc" id="L138">                startActivity(intent);  // go to LoginActivity</span>
+<span class="nc" id="L139">            }</span>
+        });
+
+<span class="nc" id="L142">        signupButton.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View v) {
+
+                /* grab strings from user inputs */
+
+<span class="nc" id="L148">                String username = usernameEditText.getText().toString();</span>
+<span class="nc" id="L149">                String name = nameEditText.getText().toString();</span>
+<span class="nc" id="L150">                String password = passwordEditText.getText().toString();</span>
+<span class="nc" id="L151">                String confirm = confirmEditText.getText().toString();</span>
+<span class="nc" id="L152">                String email = emailAccountEditText.getText().toString();</span>
+<span class="nc" id="L153">                int age = Integer.parseInt(ageEditText.getText().toString());</span>
+
+                //check if user didn't left the blank
+<span class="nc bnc" id="L156" title="All 2 branches missed.">                if(username.isEmpty()){</span>
+<span class="nc" id="L157">                    Toast.makeText(SignupActivity.this, &quot;Please, provide your username&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L158">                    return;</span>
+
+<span class="nc bnc" id="L160" title="All 2 branches missed.">                }else if(email.isEmpty()){</span>
+<span class="nc" id="L161">                    Toast.makeText(SignupActivity.this, &quot;Please, provide your email.&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L162">                    return;</span>
+
+<span class="nc bnc" id="L164" title="All 2 branches missed.">                }else if(password.isEmpty()){</span>
+<span class="nc" id="L165">                    Toast.makeText(SignupActivity.this, &quot;Plesae, provide your password.&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L166">                    return;</span>
+
+<span class="nc bnc" id="L168" title="All 2 branches missed.">                }else if(confirm.isEmpty()){</span>
+<span class="nc" id="L169">                    Toast.makeText(SignupActivity.this, &quot;Please, provide your confirm password.&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L170">                    return;</span>
+
+<span class="nc bnc" id="L172" title="All 2 branches missed.">                }else if(birthday == null){</span>
+<span class="nc" id="L173">                    Toast.makeText(SignupActivity.this, &quot;Please, provide your date of birth.&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L174">                    return;</span>
+
+<span class="nc bnc" id="L176" title="All 2 branches missed.">                }else if(gender.isEmpty()){</span>
+<span class="nc" id="L177">                    Toast.makeText(SignupActivity.this, &quot;Please, provide your gender.&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L178">                    return;</span>
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">                }else if(ageEditText.getText().toString().isEmpty()){</span>
+<span class="nc" id="L181">                    Toast.makeText(SignupActivity.this, &quot;Please, provide your age.&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L182">                    return;</span>
+
+                }
+                /**
+                SimpleDateFormat df = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;, Locale.getDefault());
+                String currentDate = df.format(new Date());
+                 **/
+<span class="nc bnc" id="L189" title="All 2 branches missed.">                if (password.equals(confirm)){</span>
+<span class="nc" id="L190">                    Toast.makeText(getApplicationContext(), &quot;Signing up&quot;, Toast.LENGTH_LONG).show();</span>
+
+
+<span class="nc" id="L193">                    String url = &quot;http://coms-309-001.class.las.iastate.edu:8080/users/&quot;;</span>
+<span class="nc" id="L194">                    JSONObject params = new JSONObject();</span>
+                    try {
+<span class="nc" id="L196">                        params.put(&quot;name&quot;, name);</span>
+<span class="nc" id="L197">                        params.put(&quot;userName&quot;, username);</span>
+<span class="nc" id="L198">                        params.put(&quot;emailId&quot;, email);</span>
+<span class="nc" id="L199">                        params.put(&quot;userPassword&quot;, password);</span>
+<span class="nc" id="L200">                        params.put(&quot;birthday&quot;, birthday);</span>
+<span class="nc" id="L201">                        params.put(&quot;gender&quot;, gender);</span>
+<span class="nc" id="L202">                        params.put(&quot;age&quot;, age);</span>
+<span class="nc" id="L203">                    } catch (JSONException e) {</span>
+<span class="nc" id="L204">                        e.printStackTrace();</span>
+<span class="nc" id="L205">                        Log.e(&quot;Error&quot;,e.toString());</span>
+<span class="nc" id="L206">                    }</span>
+
+<span class="nc" id="L208">                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest</span>
+
+<span class="nc" id="L210">                            (Request.Method.POST, url, params, new Response.Listener&lt;JSONObject&gt;() {</span>
+
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    try {
+<span class="nc" id="L215">                                        String status = response.getString(&quot;message&quot;); // Get the status from the response</span>
+
+<span class="nc bnc" id="L217" title="All 2 branches missed.">                                        if (status.equals(&quot;success&quot;)) {</span>
+                                            // Display success message
+<span class="nc" id="L219">                                            Toast.makeText(SignupActivity.this, &quot;Signup successful!&quot;, Toast.LENGTH_SHORT).show();</span>
+
+                                            // Start ChoosehobbiesActivity
+<span class="nc" id="L222">                                            Intent intent = new Intent(SignupActivity.this, ChoosehobbiesActivity.class);</span>
+<span class="nc" id="L223">                                            intent.putExtra(&quot;USERNAME&quot;, username);</span>
+<span class="nc" id="L224">                                            startActivity(intent);</span>
+<span class="nc" id="L225">                                        } else {</span>
+                                            // Display failure message
+<span class="nc" id="L227">                                            Toast.makeText(SignupActivity.this, &quot;Signup failed!&quot;, Toast.LENGTH_SHORT).show();</span>
+                                        }
+<span class="nc" id="L229">                                    } catch (JSONException e) {</span>
+<span class="nc" id="L230">                                        e.printStackTrace();</span>
+<span class="nc" id="L231">                                    }</span>
+<span class="nc" id="L232">                                }</span>
+
+<span class="nc" id="L234">                            }, new Response.ErrorListener() {</span>
+
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+<span class="nc" id="L238">                                    Toast.makeText(SignupActivity.this, &quot;Error&quot;, Toast.LENGTH_LONG).show();</span>
+<span class="nc" id="L239">                                }</span>
+                            });
+
+
+
+<span class="nc" id="L244">                    RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);</span>
+<span class="nc" id="L245">                    queue.add(jsonObjectRequest);</span>
+
+<span class="nc" id="L247">                }</span>
+                else {
+<span class="nc" id="L249">                    Toast.makeText(getApplicationContext(), &quot;Password don't match&quot;, Toast.LENGTH_LONG).show();</span>
+                }
+<span class="nc" id="L251">            }</span>
+        });
+
+
+<span class="nc" id="L255">        homeButton.setOnClickListener(new View.OnClickListener() {</span>
+            @Override
+            public void onClick(View view) {
+<span class="nc" id="L258">                Intent intent = new Intent(SignupActivity.this, MainActivity.class);</span>
+<span class="nc" id="L259">                startActivity(intent);</span>
+<span class="nc" id="L260">            }</span>
+        });
+<span class="nc" id="L262">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.2.2</div></body></html>

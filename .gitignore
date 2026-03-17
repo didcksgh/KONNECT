@@ -1,0 +1,12 @@
+.DS_Store
+*.jar
+*.mp4
+*.mov
+*.apk
+target/
+build/
+.gradle/
+.idea/
+.vscode/
+node_modules/
+dist/

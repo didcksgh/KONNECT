@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProfileEditActivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.konnect</a> &gt; <span class="el_source">ProfileEditActivity.java</span></div><h1>ProfileEditActivity.java</h1><pre class="source lang-java linenums">package com.example.konnect;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+
+/**
+ * This class represents the ProfileEditActivity and handles the editing of user profile information.
+ *
+ * @author Jayson Acosta
+ */
+<span class="nc" id="L26">public class ProfileEditActivity extends AppCompatActivity {</span>
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+<span class="nc" id="L29">      super.onCreate(savedInstanceState);</span>
+<span class="nc" id="L30">      setContentView(R.layout.activity_profile_edit);</span>
+
+        /* Initialize TextViews used in activity_login.xml */
+<span class="nc" id="L33">        TextView profileEditName= findViewById(R.id.ProfileEditName);</span>
+<span class="nc" id="L34">        TextView profileEditUsername= findViewById(R.id.ProfileEditUsername);</span>
+<span class="nc" id="L35">        TextView profileEditEmail= findViewById(R.id.ProfileEditEmail);</span>
+//        TextView profileEditBio= findViewById(R.id.ProfileEditBio);
+//        TextView profileEditGender= findViewById(R.id.ProfileEditGender);
+//        TextView profileEditBirthday= findViewById(R.id.ProfileEditBirthday);
+
+        /* Initialize Buttons used in activity_login.xml */
+<span class="nc" id="L41">        Button profileEditSaveButton= findViewById(R.id.ProfileEditSaveButton);</span>
+<span class="nc" id="L42">        profileEditSaveButton.setOnClickListener(v -&gt; {</span>
+
+            /* Initialize Strings to send to server */
+<span class="nc" id="L45">            String name = profileEditName.getText().toString();</span>
+<span class="nc" id="L46">            String username = profileEditUsername.getText().toString();</span>
+<span class="nc" id="L47">            String emailId = profileEditEmail.getText().toString();</span>
+//            String bio = profileEditBio.getText().toString();
+//            String gender = profileEditGender.getText().toString();
+//            String birthday = profileEditBirthday.getText().toString();
+
+<span class="nc" id="L52">            HashMap&lt;String, String&gt; profileStrings = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L53">            profileStrings.put(&quot;name&quot;, name);</span>
+<span class="nc" id="L54">            profileStrings.put(&quot;username&quot;, username);</span>
+<span class="nc" id="L55">            profileStrings.put(&quot;emailId&quot;, emailId);</span>
+//            profileStrings.put(&quot;bio&quot;, bio);
+//            profileStrings.put(&quot;gender&quot;, gender);
+//            profileStrings.put(&quot;birthday&quot;, birthday);
+
+            /* Verify strings to send to server */
+<span class="nc bnc" id="L61" title="All 2 branches missed.">            for (String s : profileStrings.keySet()) {</span>
+                //noinspection DataFlowIssue
+<span class="nc bnc" id="L63" title="All 2 branches missed.">                if (profileStrings.get(s).isEmpty()) {</span>
+<span class="nc" id="L64">                    profileStrings.remove(s);</span>
+                }
+<span class="nc" id="L66">            }</span>
+
+            /* Initialize urls for call to server */
+<span class="nc" id="L69">            String url = &quot;http://coms-309-001.class.las.iastate.edu:8080/users/3&quot;;</span>
+
+<span class="nc" id="L71">            JSONObject params = new JSONObject();</span>
+            try {
+<span class="nc bnc" id="L73" title="All 2 branches missed.">                for (String s : profileStrings.keySet()) {</span>
+<span class="nc" id="L74">                    params.put(s, profileStrings.get(s));</span>
+<span class="nc" id="L75">                }</span>
+<span class="nc" id="L76">            } catch (JSONException e) {</span>
+<span class="nc" id="L77">                Log.e(&quot;JSON Error&quot;, e.toString());</span>
+<span class="nc" id="L78">                Toast.makeText(this, &quot;There was a JSON Exception&quot;, Toast.LENGTH_LONG).show();</span>
+<span class="nc" id="L79">                return;</span>
+<span class="nc" id="L80">            }</span>
+
+<span class="nc" id="L82">            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, params, response -&gt; {</span>
+                try {
+<span class="nc" id="L84">                    String status = response.getString(&quot;message&quot;); // Get the status from the response</span>
+
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                    if (status.equals(&quot;success&quot;)) {</span>
+                        // Display success message
+<span class="nc" id="L88">                        Toast.makeText(ProfileEditActivity.this, &quot;Accessing profile data successful&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L89">                        finish();</span>
+                    } else {
+                        // Display failure message
+<span class="nc" id="L92">                        Toast.makeText(ProfileEditActivity.this, &quot;Accessing profile data failed&quot;, Toast.LENGTH_SHORT).show();</span>
+                    }
+<span class="nc" id="L94">                } catch (JSONException e) {</span>
+<span class="nc" id="L95">                    e.printStackTrace();</span>
+<span class="nc" id="L96">                }</span>
+<span class="nc" id="L97">            }, error -&gt; {</span>
+<span class="nc" id="L98">                Log.e(&quot;Volley error&quot;, error.toString());</span>
+<span class="nc" id="L99">                Toast.makeText(this, &quot;There was an error in the server&quot;, Toast.LENGTH_LONG).show();</span>
+<span class="nc" id="L100">            });</span>
+
+
+<span class="nc" id="L103">            RequestQueue queue = Volley.newRequestQueue(ProfileEditActivity.this);</span>
+<span class="nc" id="L104">            queue.add(jsonObjectRequest);</span>
+<span class="nc" id="L105">        });</span>
+<span class="nc" id="L106">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.2.2</div></body></html>

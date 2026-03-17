@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/find_Name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Name" />
+
+    <TextView
+        android:id="@+id/find_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin Email" />
+
+    <TextView
+        android:id="@+id/find_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Admin ID" />
+
+    <Button
+        android:id="@+id/findAll_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find All Users" />
+
+    <Button
+        android:id="@+id/find_user_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Find User" />
+
+    <EditText
+        android:id="@+id/type_pw_edt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Confirm Password"
+        android:inputType="textPassword" />
+
+</LinearLayout>

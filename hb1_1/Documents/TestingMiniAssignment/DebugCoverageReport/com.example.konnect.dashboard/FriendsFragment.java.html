@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FriendsFragment.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.konnect.dashboard</a> &gt; <span class="el_source">FriendsFragment.java</span></div><h1>FriendsFragment.java</h1><pre class="source lang-java linenums">package com.example.konnect.dashboard;
+
+import static com.example.konnect.helper.RequestJson.friendRequestStatusUpdate;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.fragment.app.Fragment;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.konnect.R;
+import com.example.konnect.helper.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class FriendsFragment extends Fragment {
+    LinearLayout containerFR, containerF, containerG;
+    View view;
+
+<span class="fc" id="L32">    public FriendsFragment() {}</span>
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+<span class="fc" id="L36">        view = inflater.inflate(R.layout.dashboard_fragment_friends, container, false);</span>
+
+<span class="fc" id="L38">        containerFR = view.findViewById(R.id.Container_FR);</span>
+<span class="fc" id="L39">        containerF = view.findViewById(R.id.Container_F);</span>
+<span class="fc" id="L40">        containerG = view.findViewById(R.id.Container_G);</span>
+
+<span class="fc" id="L42">        ImageView imageViewVFR = view.findViewById(R.id.ImageView_VFR);</span>
+<span class="fc" id="L43">        ImageView imageViewVF = view.findViewById(R.id.ImageView_VF);</span>
+<span class="fc" id="L44">        ImageView imageViewG = view.findViewById(R.id.ImageView_G);</span>
+
+<span class="fc" id="L46">        imageViewVFR.setOnClickListener(v -&gt; {</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">            if(containerFR.isShown()){</span>
+<span class="fc" id="L48">                containerFR.setVisibility(View.GONE);</span>
+<span class="fc" id="L49">                imageViewVFR.setImageResource(R.drawable.expand_more);</span>
+            } else {
+<span class="nc" id="L51">                containerFR.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L52">                imageViewVFR.setImageResource(R.drawable.expand_less);</span>
+            }
+<span class="fc" id="L54">        });</span>
+<span class="fc" id="L55">        imageViewVF.setOnClickListener(v -&gt; {</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            if(containerF.isShown()){</span>
+<span class="fc" id="L57">                containerF.setVisibility(View.GONE);</span>
+<span class="fc" id="L58">                imageViewVF.setImageResource(R.drawable.expand_more);</span>
+            } else {
+<span class="nc" id="L60">                containerF.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L61">                imageViewVF.setImageResource(R.drawable.expand_less);</span>
+            }
+<span class="fc" id="L63">        });</span>
+<span class="fc" id="L64">        imageViewG.setOnClickListener(v -&gt; {</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            if(containerG.isShown()){</span>
+<span class="fc" id="L66">                containerG.setVisibility(View.GONE);</span>
+<span class="fc" id="L67">                imageViewG.setImageResource(R.drawable.expand_more);</span>
+            } else {
+<span class="nc" id="L69">                containerG.setVisibility(View.VISIBLE);</span>
+<span class="nc" id="L70">                imageViewG.setImageResource(R.drawable.expand_less);</span>
+            }
+<span class="fc" id="L72">        });</span>
+
+<span class="fc" id="L74">        containerG.addView(createGLayout(&quot;ComS-309 Group&quot;, 906));</span>
+<span class="fc" id="L75">        containerG.addView(createGLayout(&quot;Admin Group&quot;, 101));</span>
+
+<span class="fc bfc" id="L77" title="All 2 branches covered.">        if (User.getInstance().getFriendRequests() != null){</span>
+            try {
+<span class="fc bfc" id="L79" title="All 2 branches covered.">                for (int i = 0; i &lt; User.getInstance().getFriendRequests().length(); i++) {</span>
+<span class="fc" id="L80">                    JSONObject item = User.getInstance().getFriendRequests().getJSONObject(i);</span>
+<span class="fc" id="L81">                    int id = item.getInt(&quot;id&quot;);</span>
+<span class="fc" id="L82">                    String senderUsername = item.getString(&quot;senderUsername&quot;);</span>
+<span class="fc" id="L83">                    String status = item.getString(&quot;status&quot;);</span>
+
+<span class="pc bpc" id="L85" title="2 of 4 branches missed.">                    switch (status){</span>
+                        case &quot;DECLINED&quot;:
+<span class="fc" id="L87">                            break;</span>
+                        case &quot;PENDING&quot;:
+<span class="nc" id="L89">                            containerFR.addView(createFRLayout(containerFR, containerF, senderUsername, senderUsername, id));</span>
+<span class="nc" id="L90">                            break;</span>
+                        case &quot;ACCEPTED&quot;:
+<span class="fc" id="L92">                            containerF.addView(createFLayout(senderUsername, senderUsername, id));</span>
+                            break;
+                    }
+                }
+<span class="pc" id="L96">            } catch (JSONException e) { User.dialogError(view.getContext(), e.toString()); }</span>
+        }
+
+<span class="fc" id="L99">        return view;</span>
+    }
+
+    /**
+     * context method creates a new constraint layout with an ImageView 2 TextViews and 2 more image views with onClickListeners.
+     * @param userUsername username of the user
+     * @param userName name of the user
+     * @param num ID of the user friend request
+     * @return Constraint layout to be added to screen
+     */
+    public ConstraintLayout createFRLayout(LinearLayout containerFR, LinearLayout containerF, String userUsername, String userName, int num){
+
+        /* Set Layout */
+<span class="fc" id="L112">        ConstraintLayout constraintLayout = new ConstraintLayout(view.getContext());</span>
+<span class="fc" id="L113">        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);</span>
+<span class="fc" id="L114">        layoutParams.setMargins(0,10,0,10);</span>
+<span class="fc" id="L115">        constraintLayout.setLayoutParams(layoutParams);</span>
+<span class="fc" id="L116">        constraintLayout.setId(num);</span>
+
+        /* Create Pixel equivalent to DP */
+<span class="fc" id="L119">        int fortyDPtoPX = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40 , this.getResources().getDisplayMetrics());</span>
+<span class="fc" id="L120">        int sixtyDPtoPX = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60 , this.getResources().getDisplayMetrics());</span>
+
+        /* Set Views */
+<span class="fc" id="L123">        ImageView pfp = new ImageView(view.getContext());</span>
+<span class="fc" id="L124">        pfp.setId(100000 + num);</span>
+<span class="fc" id="L125">        pfp.setImageResource(R.drawable.default_pfp);</span>
+<span class="fc" id="L126">        pfp.setBackgroundResource(R.drawable.circle_bg);</span>
+<span class="fc" id="L127">        pfp.setAdjustViewBounds(true);</span>
+<span class="fc" id="L128">        pfp.setLayoutParams(new ViewGroup.LayoutParams(sixtyDPtoPX, sixtyDPtoPX));</span>
+<span class="fc" id="L129">        constraintLayout.addView(pfp);</span>
+
+<span class="fc" id="L131">        TextView username = new TextView(view.getContext());</span>
+<span class="fc" id="L132">        username.setId(200000 + num);</span>
+<span class="fc" id="L133">        username.setText(userUsername);</span>
+<span class="fc" id="L134">        ConstraintLayout.LayoutParams layoutParams2 = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);</span>
+<span class="fc" id="L135">        layoutParams2.setMargins(20,0,0,0);</span>
+<span class="fc" id="L136">        username.setLayoutParams(layoutParams2);</span>
+<span class="fc" id="L137">        username.setTextColor(Color.BLACK);</span>
+<span class="fc" id="L138">        username.setTextSize(16);</span>
+<span class="fc" id="L139">        constraintLayout.addView(username);</span>
+
+<span class="fc" id="L141">        TextView name = new TextView(view.getContext());</span>
+<span class="fc" id="L142">        name.setId(300000 + num);</span>
+<span class="fc" id="L143">        name.setText(userName);</span>
+<span class="fc" id="L144">        name.setTextColor(Color.DKGRAY);</span>
+<span class="fc" id="L145">        name.setTextSize(14);</span>
+<span class="fc" id="L146">        constraintLayout.addView(name);</span>
+
+<span class="fc" id="L148">        ImageView accept = new ImageView(view.getContext());</span>
+<span class="fc" id="L149">        accept.setId(400000 + num);</span>
+<span class="fc" id="L150">        accept.setImageResource(R.drawable.check);</span>
+<span class="fc" id="L151">        accept.setAdjustViewBounds(true);</span>
+<span class="fc" id="L152">        accept.setLayoutParams(new ViewGroup.LayoutParams(fortyDPtoPX, fortyDPtoPX));</span>
+
+<span class="fc" id="L154">        ImageView deny = new ImageView(view.getContext());</span>
+<span class="fc" id="L155">        deny.setId(500000 + num);</span>
+<span class="fc" id="L156">        deny.setImageResource(R.drawable.close);</span>
+<span class="fc" id="L157">        deny.setAdjustViewBounds(true);</span>
+<span class="fc" id="L158">        deny.setLayoutParams(new ViewGroup.LayoutParams(fortyDPtoPX, fortyDPtoPX));</span>
+
+<span class="fc" id="L160">        accept.setOnClickListener(view -&gt; {</span>
+            try {
+<span class="nc" id="L162">                JSONObject params = new JSONObject();</span>
+<span class="nc" id="L163">                params.put(&quot;requestId&quot;, num);</span>
+<span class="nc" id="L164">                JsonObjectRequest jsonObjectRequest = friendRequestStatusUpdate(view.getContext(), params, &quot;accept&quot;, num);</span>
+<span class="nc" id="L165">                RequestQueue queue = Volley.newRequestQueue(view.getContext());</span>
+<span class="nc" id="L166">                queue.add(jsonObjectRequest);</span>
+<span class="nc" id="L167">                accept.setVisibility(View.GONE);</span>
+<span class="nc" id="L168">                deny.setVisibility(View.GONE);</span>
+<span class="nc" id="L169">                containerFR.removeView(constraintLayout);</span>
+<span class="nc" id="L170">                containerF.addView(constraintLayout);</span>
+<span class="nc" id="L171">            } catch (JSONException e) {</span>
+<span class="nc" id="L172">                throw new RuntimeException(e);</span>
+<span class="nc" id="L173">            }</span>
+<span class="nc" id="L174">        });</span>
+
+<span class="fc" id="L176">        deny.setOnClickListener(view -&gt; {</span>
+            try {
+<span class="nc" id="L178">                JSONObject params = new JSONObject();</span>
+<span class="nc" id="L179">                params.put(&quot;requestId&quot;, num);</span>
+<span class="nc" id="L180">                JsonObjectRequest jsonObjectRequest = friendRequestStatusUpdate(view.getContext(), params, &quot;decline&quot;, num);</span>
+<span class="nc" id="L181">                RequestQueue queue = Volley.newRequestQueue(view.getContext());</span>
+<span class="nc" id="L182">                queue.add(jsonObjectRequest);</span>
+<span class="nc" id="L183">                accept.setVisibility(View.GONE);</span>
+<span class="nc" id="L184">                deny.setVisibility(View.GONE);</span>
+<span class="nc" id="L185">                containerFR.removeView(constraintLayout);</span>
+<span class="nc" id="L186">            } catch (JSONException e) {</span>
+<span class="nc" id="L187">                throw new RuntimeException(e);</span>
+<span class="nc" id="L188">            }</span>
+<span class="nc" id="L189">        });</span>
+
+<span class="fc" id="L191">        constraintLayout.addView(deny);</span>
+<span class="fc" id="L192">        constraintLayout.addView(accept);</span>
+
+        /* Set Constraints */
+<span class="fc" id="L195">        ConstraintSet constraintSet = new ConstraintSet();</span>
+<span class="fc" id="L196">        constraintSet.clone(constraintLayout);</span>
+
+<span class="fc" id="L198">        constraintSet.connect(pfp.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START);</span>
+<span class="fc" id="L199">        constraintSet.connect(pfp.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);</span>
+<span class="fc" id="L200">        constraintSet.connect(pfp.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L202">        constraintSet.connect(username.getId(), ConstraintSet.START, pfp.getId(), ConstraintSet.END);</span>
+<span class="fc" id="L203">        constraintSet.connect(username.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);</span>
+
+<span class="fc" id="L205">        constraintSet.connect(name.getId(), ConstraintSet.START, username.getId(), ConstraintSet.START);</span>
+<span class="fc" id="L206">        constraintSet.connect(name.getId(), ConstraintSet.TOP, username.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L208">        constraintSet.connect(deny.getId(),ConstraintSet.END, constraintLayout.getId(), ConstraintSet.END);</span>
+<span class="fc" id="L209">        constraintSet.connect(deny.getId(),ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);</span>
+<span class="fc" id="L210">        constraintSet.connect(deny.getId(),ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L212">        constraintSet.connect(accept.getId(), ConstraintSet.END ,deny.getId(),ConstraintSet.START);</span>
+<span class="fc" id="L213">        constraintSet.connect(accept.getId(), ConstraintSet.TOP, deny.getId(),ConstraintSet.TOP);</span>
+<span class="fc" id="L214">        constraintSet.connect(accept.getId(), ConstraintSet.BOTTOM, deny.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L216">        constraintSet.applyTo(constraintLayout);</span>
+
+<span class="fc" id="L218">        return constraintLayout;</span>
+    }
+
+    /**
+     * context method creates a new constraint layout with an ImageView and 2 TextViews
+     * @param userUsername username of the user
+     * @param userName name of the user
+     * @param num ID of the user friend request
+     * @return Constraint layout to be added to screen
+     */
+    public ConstraintLayout createFLayout(String userUsername, String userName, int num){
+
+        /* Set Layout */
+<span class="fc" id="L231">        ConstraintLayout constraintLayout = new ConstraintLayout(view.getContext());</span>
+<span class="fc" id="L232">        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);</span>
+<span class="fc" id="L233">        layoutParams.setMargins(0,10,0,10);</span>
+<span class="fc" id="L234">        constraintLayout.setLayoutParams(layoutParams);</span>
+<span class="fc" id="L235">        constraintLayout.setId(num);</span>
+
+        /* Create Pixel equivalent to DP */
+<span class="fc" id="L238">        int sixtyDPtoPX = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60 , this.getResources().getDisplayMetrics());</span>
+
+        /* Set Views */
+<span class="fc" id="L241">        ImageView pfp = new ImageView(view.getContext());</span>
+<span class="fc" id="L242">        pfp.setId(100000 + num);</span>
+<span class="fc" id="L243">        pfp.setImageResource(R.drawable.default_pfp);</span>
+<span class="fc" id="L244">        pfp.setBackgroundResource(R.drawable.circle_bg);</span>
+<span class="fc" id="L245">        pfp.setAdjustViewBounds(true);</span>
+<span class="fc" id="L246">        pfp.setLayoutParams(new ViewGroup.LayoutParams(sixtyDPtoPX, sixtyDPtoPX));</span>
+<span class="fc" id="L247">        constraintLayout.addView(pfp);</span>
+
+<span class="fc" id="L249">        TextView username = new TextView(view.getContext());</span>
+<span class="fc" id="L250">        username.setId(200000 + num);</span>
+<span class="fc" id="L251">        username.setText(userUsername);</span>
+<span class="fc" id="L252">        ConstraintLayout.LayoutParams layoutParams2 = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);</span>
+<span class="fc" id="L253">        layoutParams2.setMargins(20,0,0,0);</span>
+<span class="fc" id="L254">        username.setLayoutParams(layoutParams2);</span>
+<span class="fc" id="L255">        username.setTextColor(Color.BLACK);</span>
+<span class="fc" id="L256">        username.setTextSize(16);</span>
+<span class="fc" id="L257">        constraintLayout.addView(username);</span>
+
+<span class="fc" id="L259">        TextView name = new TextView(view.getContext());</span>
+<span class="fc" id="L260">        name.setId(300000 + num);</span>
+<span class="fc" id="L261">        name.setText(userName);</span>
+<span class="fc" id="L262">        name.setTextColor(Color.DKGRAY);</span>
+<span class="fc" id="L263">        name.setTextSize(14);</span>
+<span class="fc" id="L264">        constraintLayout.addView(name);</span>
+
+        /* Set Constraints */
+<span class="fc" id="L267">        ConstraintSet constraintSet = new ConstraintSet();</span>
+<span class="fc" id="L268">        constraintSet.clone(constraintLayout);</span>
+
+<span class="fc" id="L270">        constraintSet.connect(pfp.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START);</span>
+<span class="fc" id="L271">        constraintSet.connect(pfp.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);</span>
+<span class="fc" id="L272">        constraintSet.connect(pfp.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L274">        constraintSet.connect(username.getId(), ConstraintSet.START, pfp.getId(), ConstraintSet.END);</span>
+<span class="fc" id="L275">        constraintSet.connect(username.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);</span>
+
+<span class="fc" id="L277">        constraintSet.connect(name.getId(), ConstraintSet.START, username.getId(), ConstraintSet.START);</span>
+<span class="fc" id="L278">        constraintSet.connect(name.getId(), ConstraintSet.TOP, username.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L280">        constraintSet.applyTo(constraintLayout);</span>
+
+<span class="fc" id="L282">        return constraintLayout;</span>
+    }
+
+    /**
+     * context method creates a new constraint layout with an ImageView 2 TextViews
+     * @param groupName name of the group
+     * @param num id of the group
+     * @return Constraint layout to be added to screen
+     */
+    public ConstraintLayout createGLayout(String groupName, int num){
+
+        /* Set Layout */
+<span class="fc" id="L294">        ConstraintLayout constraintLayout = new ConstraintLayout(view.getContext());</span>
+<span class="fc" id="L295">        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);</span>
+<span class="fc" id="L296">        layoutParams.setMargins(0,10,0,10);</span>
+<span class="fc" id="L297">        constraintLayout.setLayoutParams(layoutParams);</span>
+<span class="fc" id="L298">        constraintLayout.setId(num);</span>
+
+        /* Create Pixel equivalent to DP */
+<span class="fc" id="L301">        int sixtyDPtoPX = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 60 , this.getResources().getDisplayMetrics());</span>
+
+        /* Set Views */
+<span class="fc" id="L304">        ImageView pfp = new ImageView(view.getContext());</span>
+<span class="fc" id="L305">        pfp.setId(100000 + num);</span>
+<span class="fc" id="L306">        pfp.setImageResource(R.drawable.default_pfp);</span>
+<span class="fc" id="L307">        pfp.setBackgroundResource(R.drawable.circle_bg);</span>
+<span class="fc" id="L308">        pfp.setAdjustViewBounds(true);</span>
+<span class="fc" id="L309">        pfp.setLayoutParams(new ViewGroup.LayoutParams(sixtyDPtoPX, sixtyDPtoPX));</span>
+<span class="fc" id="L310">        constraintLayout.addView(pfp);</span>
+
+<span class="fc" id="L312">        TextView group = new TextView(view.getContext());</span>
+<span class="fc" id="L313">        group.setId(200000 + num);</span>
+<span class="fc" id="L314">        group.setText(groupName);</span>
+<span class="fc" id="L315">        ConstraintLayout.LayoutParams layoutParams2 = new ConstraintLayout.LayoutParams(ConstraintLayout.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);</span>
+<span class="fc" id="L316">        layoutParams2.setMargins(20,0,0,0);</span>
+<span class="fc" id="L317">        group.setLayoutParams(layoutParams2);</span>
+<span class="fc" id="L318">        group.setTextColor(Color.BLACK);</span>
+<span class="fc" id="L319">        group.setTextSize(16);</span>
+<span class="fc" id="L320">        constraintLayout.addView(group);</span>
+
+        /* Set Constraints */
+<span class="fc" id="L323">        ConstraintSet constraintSet = new ConstraintSet();</span>
+<span class="fc" id="L324">        constraintSet.clone(constraintLayout);</span>
+
+<span class="fc" id="L326">        constraintSet.connect(pfp.getId(), ConstraintSet.START, constraintLayout.getId(), ConstraintSet.START);</span>
+<span class="fc" id="L327">        constraintSet.connect(pfp.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);</span>
+<span class="fc" id="L328">        constraintSet.connect(pfp.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L330">        constraintSet.connect(group.getId(), ConstraintSet.START, pfp.getId(), ConstraintSet.END);</span>
+<span class="fc" id="L331">        constraintSet.connect(group.getId(), ConstraintSet.TOP, constraintLayout.getId(), ConstraintSet.TOP);</span>
+<span class="fc" id="L332">        constraintSet.connect(group.getId(), ConstraintSet.BOTTOM, constraintLayout.getId(), ConstraintSet.BOTTOM);</span>
+
+<span class="fc" id="L334">        constraintSet.applyTo(constraintLayout);</span>
+
+<span class="fc" id="L336">        return constraintLayout;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.2.2</div></body></html>

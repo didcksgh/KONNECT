@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ChoosehobbiesActivity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debug</a> &gt; <a href="index.source.html" class="el_package">com.example.konnect</a> &gt; <span class="el_source">ChoosehobbiesActivity.java</span></div><h1>ChoosehobbiesActivity.java</h1><pre class="source lang-java linenums">package com.example.konnect;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import com.example.konnect.helper.Hobby;
+import com.example.konnect.helper.User;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * This class represents the ChooseHobbiesActivity and handles the process of choosing hobbies. This activity connects to ShowChosenHobbiesActivity.
+ *
+ * @author Chanho Yang
+ */
+<span class="nc" id="L37">public class ChoosehobbiesActivity extends AppCompatActivity {</span>
+
+    /**
+     * Username of the user.
+     */
+    private String username_hobby;
+
+    /**
+     * List of all the Check Boxes.
+     */
+<span class="nc" id="L47">    private List&lt;CheckBox&gt; checkBoxes = new ArrayList&lt;&gt;();</span>
+
+    /**
+     * The URL of the server.
+     */
+<span class="nc" id="L52">    private String url = &quot;http://coms-309-001.class.las.iastate.edu:8080/hobbies&quot;;</span>
+
+<span class="nc" id="L54">    List&lt;Hobby&gt; hobbies = new ArrayList&lt;&gt;();</span>
+
+    protected void onCreate(Bundle savedInstanceState){
+<span class="nc" id="L57">        super.onCreate(savedInstanceState);</span>
+
+<span class="nc" id="L59">        setContentView(R.layout.activity_hobby);</span>
+
+        //Intent intent = getIntent();
+<span class="nc" id="L62">        username_hobby = User.getInstance().getUsername();</span>
+
+<span class="nc" id="L64">        TextView usernameTextView = findViewById(R.id.usernameTextView);</span>
+<span class="nc" id="L65">        usernameTextView.setText(username_hobby + &quot;, Choose your hobbies!&quot;);</span>
+
+<span class="nc" id="L67">        hobbies.add(new Hobby(&quot;SOCCER&quot;, &quot;OUTDOOR&quot;));</span>
+<span class="nc" id="L68">        hobbies.add(new Hobby(&quot;MOVIE&quot;, &quot;INDIVIDUAL&quot;));</span>
+<span class="nc" id="L69">        hobbies.add(new Hobby(&quot;COOKING&quot;, &quot;INDOOR&quot;));</span>
+<span class="nc" id="L70">        hobbies.add(new Hobby(&quot;READING&quot;, &quot;INDOOR&quot;));</span>
+<span class="nc" id="L71">        hobbies.add(new Hobby(&quot;VIDEOGAME&quot;, &quot;INDOOR&quot;));</span>
+<span class="nc" id="L72">        hobbies.add(new Hobby(&quot;Fishing&quot;, &quot;OUTDOOR&quot;));</span>
+<span class="nc" id="L73">        hobbies.add(new Hobby(&quot;DRAWING&quot;, &quot;INDIVIDUAL&quot;));</span>
+<span class="nc" id="L74">        hobbies.add(new Hobby(&quot;HIKING&quot;, &quot;OUTDOOR&quot;));</span>
+<span class="nc" id="L75">        hobbies.add(new Hobby(&quot;TRAVELING&quot;, &quot;INDIVIDUAL&quot;));</span>
+<span class="nc" id="L76">        hobbies.add(new Hobby(&quot;WORKING OUT&quot;, &quot;INDIVIDUAL&quot;));</span>
+
+
+
+
+<span class="nc" id="L81">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox1));</span>
+<span class="nc" id="L82">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox2));</span>
+<span class="nc" id="L83">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox3));</span>
+<span class="nc" id="L84">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox4));</span>
+<span class="nc" id="L85">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox5));</span>
+<span class="nc" id="L86">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox6));</span>
+<span class="nc" id="L87">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox7));</span>
+<span class="nc" id="L88">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox8));</span>
+<span class="nc" id="L89">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox9));</span>
+<span class="nc" id="L90">        checkBoxes.add((CheckBox) findViewById(R.id.checkBox10));</span>
+
+
+        //assign Hobby value to each corresponding checkbox
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        for (int i = 0; i &lt; checkBoxes.size(); i++) {</span>
+<span class="nc" id="L95">            CheckBox checkBox = checkBoxes.get(i);</span>
+<span class="nc" id="L96">            Hobby hobby = hobbies.get(i);</span>
+<span class="nc" id="L97">            checkBox.setText(hobby.getName() + &quot;, &quot; + hobby.getType());</span>
+        }
+
+<span class="nc" id="L100">        Button submitButton = findViewById(R.id.hobby_choose_btn);</span>
+
+        //to check if user choose more than 5 hobbies
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        for (CheckBox checkBox : checkBoxes) {</span>
+<span class="nc" id="L104">            checkBox.setOnClickListener(new View.OnClickListener() {</span>
+                @Override
+                public void onClick(View v) {
+<span class="nc" id="L107">                    int checkedCount = 0;</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">                    for (CheckBox cb : checkBoxes) {</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">                        if (cb.isChecked()) {</span>
+<span class="nc" id="L110">                            checkedCount++;</span>
+                        }
+<span class="nc" id="L112">                    }</span>
+
+<span class="nc bnc" id="L114" title="All 2 branches missed.">                    if (checkedCount &gt; 1) {</span>
+<span class="nc" id="L115">                        checkBox.setChecked(false);</span>
+<span class="nc" id="L116">                        Toast.makeText(ChoosehobbiesActivity.this, &quot;You should choose one hobbies&quot;, Toast.LENGTH_SHORT).show();</span>
+                    }
+<span class="nc" id="L118">                }</span>
+            });
+<span class="nc" id="L120">        }</span>
+
+
+<span class="nc" id="L123">        submitButton.setOnClickListener(new View.OnClickListener(){</span>
+            @Override
+            public void onClick(View view) {
+<span class="nc" id="L126">                submitHobbies();</span>
+<span class="nc" id="L127">            }</span>
+        });
+
+
+
+<span class="nc" id="L132">    }</span>
+
+    /**
+     * Checks if a Hobby is selected and submits all selected hobbies to sendPostRequest.
+     */
+    private void submitHobbies(){
+        //JSON array for storing hobbies
+<span class="nc" id="L139">        boolean isHobbySelected = false;</span>
+
+<span class="nc bnc" id="L141" title="All 2 branches missed.">        for (CheckBox checkBox : checkBoxes) {</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            if (checkBox.isChecked()) {</span>
+<span class="nc" id="L143">                isHobbySelected = true;</span>
+<span class="nc" id="L144">                break;</span>
+            }
+<span class="nc" id="L146">        }</span>
+
+        // If no hobby is selected, show a message and return
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        if (!isHobbySelected) {</span>
+<span class="nc" id="L150">            Toast.makeText(this, &quot;Choose at least one hobby&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L151">            return;</span>
+        }
+
+        // Loop over each checkbox
+<span class="nc bnc" id="L155" title="All 2 branches missed.">        for (int i = 0; i &lt; checkBoxes.size(); i++) {</span>
+<span class="nc" id="L156">            CheckBox checkBox = checkBoxes.get(i);</span>
+<span class="nc bnc" id="L157" title="All 2 branches missed.">            if (checkBox.isChecked()) {</span>
+<span class="nc" id="L158">                Hobby hobby = hobbies.get(i);</span>
+<span class="nc" id="L159">                JSONObject hobbyJson = new JSONObject();</span>
+                try {
+<span class="nc" id="L161">                    hobbyJson.put(&quot;name&quot;, hobby.getName());</span>
+<span class="nc" id="L162">                    hobbyJson.put(&quot;hobbyType&quot;, hobby.getType());</span>
+
+                    // Send a POST request for this hobby
+<span class="nc" id="L165">                    sendPostRequest(url, hobbyJson);</span>
+<span class="nc" id="L166">                } catch (JSONException e) {</span>
+<span class="nc" id="L167">                    e.printStackTrace();</span>
+<span class="nc" id="L168">                }</span>
+            }
+        }
+
+
+<span class="nc" id="L173">    }</span>
+
+    /**
+     * Sends a POST request to server with all chosen hobbies of the user in a json object.
+     *
+     * @param url
+     * @param jsonObject
+     */
+    private void sendPostRequest(String url, JSONObject jsonObject) {
+<span class="nc" id="L182">        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject,</span>
+<span class="nc" id="L183">                new Response.Listener&lt;JSONObject&gt;() {</span>
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Handle the response from the server
+                        try {
+<span class="nc" id="L188">                            String status = response.getString(&quot;message&quot;); // Get the status from the response</span>
+
+<span class="nc bnc" id="L190" title="All 2 branches missed.">                            if (status.equals(&quot;success&quot;)) {</span>
+                                // Display success message
+<span class="nc" id="L192">                                Toast.makeText(ChoosehobbiesActivity.this, &quot;Hobby submitted successfully!&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc" id="L193">                                Intent intent = new Intent(ChoosehobbiesActivity.this, ShowChosenHobbiesActivity.class);</span>
+<span class="nc" id="L194">                                intent.putExtra(&quot;USERNAME&quot;, username_hobby);</span>
+<span class="nc" id="L195">                                startActivity(intent);</span>
+<span class="nc" id="L196">                            } else {</span>
+                                // Display failure message
+<span class="nc" id="L198">                                Toast.makeText(ChoosehobbiesActivity.this, &quot;Failed to submit hobby!&quot;, Toast.LENGTH_SHORT).show();</span>
+                            }
+<span class="nc" id="L200">                        } catch (JSONException e) {</span>
+<span class="nc" id="L201">                            e.printStackTrace();</span>
+<span class="nc" id="L202">                        }</span>
+<span class="nc" id="L203">                    }</span>
+<span class="nc" id="L204">                }, new Response.ErrorListener() {</span>
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                // Handle the error
+<span class="nc bnc" id="L208" title="All 4 branches missed.">                if (error instanceof TimeoutError || error instanceof NoConnectionError) {</span>
+<span class="nc" id="L209">                    Toast.makeText(ChoosehobbiesActivity.this, &quot;Network error!&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc bnc" id="L210" title="All 2 branches missed.">                } else if (error instanceof AuthFailureError) {</span>
+<span class="nc" id="L211">                    Toast.makeText(ChoosehobbiesActivity.this, &quot;Authentication error!&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc bnc" id="L212" title="All 2 branches missed.">                } else if (error instanceof ServerError) {</span>
+<span class="nc" id="L213">                    Toast.makeText(ChoosehobbiesActivity.this, &quot;Server error!&quot;, Toast.LENGTH_SHORT).show();</span>
+<span class="nc bnc" id="L214" title="All 2 branches missed.">                } else if (error instanceof ParseError) {</span>
+<span class="nc" id="L215">                    Toast.makeText(ChoosehobbiesActivity.this, &quot;Parse error!&quot;, Toast.LENGTH_SHORT).show();</span>
+                }
+<span class="nc" id="L217">            }</span>
+        });
+
+        // Add the request to the request queue
+<span class="nc" id="L221">        Volley.newRequestQueue(this).add(jsonObjectRequest);</span>
+<span class="nc" id="L222">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span>Generated by the Android Gradle plugin 8.2.2</div></body></html>
