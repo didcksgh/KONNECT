@@ -1,9 +1,9 @@
-KONNECT
+# KONNECT
 Interest-Based Social Networking App with Real-Time Messaging
 
 관심 기반 소셜 네트워킹 및 실시간 메시징 애플리케이션
 
-Overview | 프로젝트 개요
+## Overview | 프로젝트 개요
 
 KONNECT is a mobile social networking platform designed to connect users based on shared interests and enable real-time communication.
 
@@ -17,7 +17,7 @@ My primary contribution focused on Android client architecture and real-time com
 
 본 프로젝트에서 Android 클라이언트 아키텍처 및 실시간 통신 기능 구현을 주도했으며, 사용자 도메인 중심의 백엔드 개발에도 협업 형태로 참여했습니다.
 
-My Role | 담당 역할
+## My Role | 담당 역할
 Frontend (Primary Responsibility)
 
 프론트엔드 (주요 담당)
@@ -59,7 +59,7 @@ Backend (Collaborative Contribution)
 •Supported frontend-backend integration testing
 → 프론트엔드-백엔드 통합 테스트 지원
 
-System Architecture | 시스템 구조
+## System Architecture | 시스템 구조
 
 Android Client (Primary Contribution)
 ↓ REST API + WebSocket
@@ -67,7 +67,7 @@ Spring Boot Backend
 ↓
 MySQL Database
 
-Tech Stack | 기술 스택
+## Tech Stack | 기술 스택
 Mobile Client
 
 •Android (Java)
@@ -90,7 +90,7 @@ Backend
 
 •MySQL
 
-Key Features | 주요 기능
+## Key Features | 주요 기능
 Real-Time Messaging | 실시간 메시징
 
 •Persistent WebSocket connection
@@ -124,7 +124,7 @@ User Management | 사용자 관리
 •Backend user API collaboration
 → 사용자 도메인 API 개발 협업
 
-Engineering Challenges | 기술적 도전
+## Engineering Challenges | 기술적 도전
 
 •Handling concurrent REST + WebSocket communication
 → 모바일 환경에서 REST와 WebSocket 동시 통신 구조 설계
@@ -138,7 +138,7 @@ Engineering Challenges | 기술적 도전
 •Integrating frontend workflows with backend domain logic
 → 사용자 흐름과 백엔드 도메인 로직 통합 설계
 
-Learning Outcomes | 핵심 성장 경험
+## Learning Outcomes | 핵심 성장 경험
 
 •Real-time mobile system architecture design
 
@@ -153,7 +153,7 @@ Learning Outcomes | 핵심 성장 경험
 → 프론트엔드-백엔드 협업 기반 개발 경험
 → 확장 가능한 사용자 상호작용 시스템 설계 역량 확보
 
-Future Improvements | 향후 개선 방향
+## Future Improvements | 향후 개선 방향
 
 •Push notification integration
 
