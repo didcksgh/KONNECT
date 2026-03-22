@@ -171,5 +171,5 @@ User Management | 사용자 관리
 → 백엔드 확장성 개선
 → 클라우드 배포 구조 설계
 
-Author
+## Author
 Chanho Yang
